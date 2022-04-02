@@ -51,7 +51,7 @@ local car_f1 = {
 function car_f1:on_rightclick(clicker)
   if not clicker or not clicker:is_player() then return end
   if not self.driver then
-    clicker:set_attach(self.object, "", {x=-2.5, y=-1, z=0}, {x=0, y=90, z=0})
+    clicker:set_attach(self.object, "", {x=-2, y=-1, z=0}, {x=0, y=90, z=0})
     clicker:set_properties({visual_size={x=0.3, y=0.3, z=0.3}, eye_height=0.3})
 
     default.player_attached[clicker:get_player_name()] = true
