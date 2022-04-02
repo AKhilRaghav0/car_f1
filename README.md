@@ -16,3 +16,6 @@ Minetest-Mod, Just a normal F1 car
 ## Bugs
 - [x] Player Size stuck at 0.4 while breaking car in motion 
 - [ ] Unease Car animation on slopes 
+
+--------------------------------------------------------------------------
+Texture template added to create custom textures 
