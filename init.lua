@@ -194,3 +194,4 @@ minetest.register_craft({
       {"technic:rubber", "technic:carbon_steel_block", "technic:rubber"}
   },
 }) ]]--
+
