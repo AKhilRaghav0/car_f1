@@ -61,7 +61,7 @@ function car_f1:on_rightclick(clicker)
     minetest.sound_play("car_f1_start", {
       pos = clicker:get_pos(),
       gain = 1.0,
-      max_hear_distance = 8,
+      max_hear_distance = 4,
     })
     
     self.object:set_yaw(clicker:get_look_horizontal() - math.rad(270))
@@ -96,7 +96,7 @@ function car_f1:on_step(dtime)
   minetest.sound_play("car_f1_running", {
     pos = car_f1:get_pos(),
     gain = 1.0,
-    max_hear_distance = 8,
+    max_hear_distance = 4,
   })
   -- Acelerating, braking, rotating and skidding
   self.v = math.sqrt(self.object:get_velocity().x^2 + self.object:get_velocity().z^2) * get_sign(self.v)
