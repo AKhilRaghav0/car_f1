@@ -58,7 +58,12 @@ function car_f1:on_rightclick(clicker)
     minetest.after(0.2, function() -- we must do this because of bug
       default.player_set_animation(clicker, "sit" , 1)
     end)
-
+    minetest.sound_play("car_f1_start", {
+      pos = clicker:get_pos(),
+      gain = 1.0,
+      max_hear_distance = 8,
+    })
+    
     self.object:set_yaw(clicker:get_look_horizontal() - math.rad(270))
     self.driver = clicker
   elseif clicker == self.driver then
