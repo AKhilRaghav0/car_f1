@@ -58,7 +58,12 @@ function car_f1:on_rightclick(clicker)
     minetest.after(0.2, function() -- we must do this because of bug
       default.player_set_animation(clicker, "sit" , 1)
     end)
-
+    minetest.sound_play("car_f1_start", {
+      pos = clicker:get_pos(),
+      gain = 1.0,
+      max_hear_distance = 4,
+    })
+    
     self.object:set_yaw(clicker:get_look_horizontal() - math.rad(270))
     self.driver = clicker
   elseif clicker == self.driver then
@@ -88,7 +93,12 @@ function car_f1:on_punch(puncher, time_from_last_punch, tool_capabilities, direc
 end
 
 function car_f1:on_step(dtime)
-	-- Acelerating, braking, rotating and skidding
+  minetest.sound_play("car_f1_running", {
+    pos = car_f1:get_pos(),
+    gain = 1.0,
+    max_hear_distance = 4,
+  })
+  -- Acelerating, braking, rotating and skidding
   self.v = math.sqrt(self.object:get_velocity().x^2 + self.object:get_velocity().z^2) * get_sign(self.v)
   self.f = (self.f > 0.5) and 0.5 or 0
   self.r = 0

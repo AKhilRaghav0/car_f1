@@ -2,7 +2,7 @@
 Minetest-Mod, Just a normal F1 car 
 # Improvements 
 
-- [ ] Add engine Sound track on 4 nodes radius
+- [x] Add engine Sound track on 4 nodes radius
 - [ ] New Texture for inventory image 
 - [x] find perfect texture for Car tyres 
 - [x] convert .x file to .obj 
