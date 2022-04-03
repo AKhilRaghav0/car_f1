@@ -93,7 +93,12 @@ function car_f1:on_punch(puncher, time_from_last_punch, tool_capabilities, direc
 end
 
 function car_f1:on_step(dtime)
-	-- Acelerating, braking, rotating and skidding
+  minetest.sound_play("car_f1_running", {
+    pos = car_f1:get_pos(),
+    gain = 1.0,
+    max_hear_distance = 8,
+  })
+  -- Acelerating, braking, rotating and skidding
   self.v = math.sqrt(self.object:get_velocity().x^2 + self.object:get_velocity().z^2) * get_sign(self.v)
   self.f = (self.f > 0.5) and 0.5 or 0
   self.r = 0
