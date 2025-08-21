@@ -1,5 +1,5 @@
--- Enhanced car_f1 mod - Main initialization file
--- This mod provides an F1 racing car with improved physics, audio, and features
+-- Enhanced car_f1 mod - Main initialization file with advanced physics
+-- This mod provides an F1 racing car with professional-grade physics simulation
 
 -- Load configuration
 local config = dofile(minetest.get_modpath("car_f1") .. "/config.lua")
@@ -20,8 +20,10 @@ local function init_mod()
     crafting.register_all()
     
     -- Log successful initialization
-    minetest.log("info", "[car_f1] F1 Car mod initialized successfully!")
-    minetest.log("info", "[car_f1] Features: Enhanced physics, 3D audio, fuel system, damage system")
+    minetest.log("info", "[car_f1] Enhanced F1 Car mod initialized successfully!")
+    minetest.log("info", "[car_f1] Advanced physics features: Suspension, Tire Physics, Aerodynamics, Weight Transfer")
+    minetest.log("info", "[car_f1] Driving assistance: ABS, TCS, ESC systems")
+    minetest.log("info", "[car_f1] Weather simulation and damage system")
 end
 
 -- Register on_mods_loaded to ensure all dependencies are available
@@ -29,34 +31,40 @@ minetest.register_on_mods_loaded(function()
     init_mod()
 end)
 
--- Add chat commands for testing and debugging
+-- Enhanced chat commands for testing and debugging advanced physics
 minetest.register_chatcommand("car_info", {
-    description = "Show information about the F1 car mod",
+    description = "Show information about the enhanced F1 car mod",
     func = function(name, param)
         local player = minetest.get_player_by_name(name)
         if not player then return false, "Player not found" end
         
-        minetest.chat_send_player(name, "=== F1 Car Mod Information ===")
-        minetest.chat_system(name, "Version: 2.0 Enhanced")
-        minetest.chat_system(name, "Features:")
-        minetest.chat_system(name, "- Enhanced physics with slope handling")
-        minetest.chat_system(name, "- 3D positional audio (4 node radius)")
-        minetest.chat_system(name, "- Fuel system and damage system")
-        minetest.chat_system(name, "- Improved collision detection")
-        minetest.chat_system(name, "- Better player controls and camera")
-        minetest.chat_system(name, "")
-        minetest.chat_system(name, "Controls:")
-        minetest.chat_system(name, "- WASD: Drive and turn")
-        minetest.chat_system(name, "- Space: Toggle mouse look")
-        minetest.chat_system(name, "- Shift: Handbrake")
-        minetest.chat_system(name, "- Right-click: Enter/exit car")
+        minetest.chat_send_player(name, "=== Enhanced F1 Car Mod v2.0 ===")
+        minetest.chat_send_player(name, "🚗 Advanced Physics Features:")
+        minetest.chat_send_player(name, "  • Realistic suspension system")
+        minetest.chat_send_player(name, "  • Advanced tire physics & traction")
+        minetest.chat_send_player(name, "  • Weight transfer simulation")
+        minetest.chat_send_player(name, "  • Aerodynamics & downforce")
+        minetest.chat_send_player(name, "  • 6-speed transmission")
+        minetest.chat_send_player(name, "")
+        minetest.chat_send_player(name, "🎮 Enhanced Controls:")
+        minetest.chat_send_player(name, "  • WASD: Drive and turn")
+        minetest.chat_send_player(name, "  • Space: Toggle mouse look")
+        minetest.chat_send_player(name, "  • Shift: Clutch control")
+        minetest.chat_send_player(name, "  • Right-click: Enter/exit car")
+        minetest.chat_send_player(name, "")
+        minetest.chat_send_player(name, "🔧 Advanced Systems:")
+        minetest.chat_send_player(name, "  • ABS (Anti-lock Braking)")
+        minetest.chat_send_player(name, "  • TCS (Traction Control)")
+        minetest.chat_send_player(name, "  • ESC (Stability Control)")
+        minetest.chat_send_player(name, "  • Weather effects")
+        minetest.chat_send_player(name, "  • Component damage system")
         
-        return true, "Information displayed in chat"
+        return true, "Enhanced mod information displayed"
     end
 })
 
 minetest.register_chatcommand("car_spawn", {
-    description = "Spawn an F1 car at your position",
+    description = "Spawn an enhanced F1 car at your position",
     func = function(name, param)
         local player = minetest.get_player_by_name(name)
         if not player then return false, "Player not found" end
@@ -70,14 +78,150 @@ minetest.register_chatcommand("car_spawn", {
             local yaw = player:get_look_horizontal()
             car:set_yaw(yaw)
             
-            return true, "F1 car spawned successfully!"
+            return true, "Enhanced F1 car spawned successfully!"
         else
             return false, "Failed to spawn car"
         end
     end
 })
 
--- Add HUD elements for car information
+-- New command for car diagnostics
+minetest.register_chatcommand("car_diagnostics", {
+    description = "Show detailed car diagnostics and physics data",
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then return false, "Player not found" end
+        
+        local attached_to = player:get_attach()
+        if not attached_to then
+            return false, "You must be in a car to use this command"
+        end
+        
+        local car_entity = minetest.get_objects_inside_radius(attached_to:get_pos(), 1)
+        for _, obj in ipairs(car_entity) do
+            if obj:get_luaentity() and obj:get_luaentity().name == "car_f1:car_f1" then
+                local car = obj:get_luaentity()
+                controls.show_car_diagnostics(car, player)
+                return true, "Car diagnostics displayed"
+            end
+        end
+        
+        return false, "No car found nearby"
+    end
+})
+
+-- Weather control command
+minetest.register_chatcommand("car_weather", {
+    description = "Change weather conditions (clear/rain/snow)",
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then return false, "Player not found" end
+        
+        local attached_to = player:get_attach()
+        if not attached_to then
+            return false, "You must be in a car to use this command"
+        end
+        
+        local weather_type = param:lower()
+        if weather_type == "" then
+            return false, "Usage: /car_weather <clear|rain|snow>"
+        end
+        
+        local car_entity = minetest.get_objects_inside_radius(attached_to:get_pos(), 1)
+        for _, obj in ipairs(car_entity) do
+            if obj:get_luaentity() and obj:get_luaentity().name == "car_f1:car_f1" then
+                local car = obj:get_luaentity()
+                local success, message = controls.set_weather_condition(car, weather_type)
+                return success, message
+            end
+        end
+        
+        return false, "No car found nearby"
+    end
+})
+
+-- Physics testing command
+minetest.register_chatcommand("car_physics", {
+    description = "Test advanced physics features",
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then return false, "Player not found" end
+        
+        local attached_to = player:get_attach()
+        if not attached_to then
+            return false, "You must be in a car to use this command"
+        end
+        
+        local car_entity = minetest.get_objects_inside_radius(attached_to:get_pos(), 1)
+        for _, obj in ipairs(car_entity) do
+            if obj:get_luaentity() and obj:get_luaentity().name == "car_f1:car_f1" then
+                local car = obj:get_luaentity()
+                
+                -- Test suspension
+                car.suspension_compression = 0.2
+                minetest.chat_send_player(name, "Testing suspension system...")
+                
+                -- Test tire wear
+                car.tire_wear = 0.5
+                minetest.chat_send_player(name, "Testing tire wear effects...")
+                
+                -- Test damage system
+                car.component_damage = {front_bumper = 25, hood = 15}
+                physics.apply_damage_effects(car)
+                minetest.chat_send_player(name, "Testing damage system...")
+                
+                return true, "Physics tests applied to car"
+            end
+        end
+        
+        return false, "No car found nearby"
+    end
+})
+
+-- Performance testing command
+minetest.register_chatcommand("car_performance", {
+    description = "Test car performance and handling",
+    func = function(name, param)
+        local player = minetest.get_player_by_name(name)
+        if not player then return false, "Player not found" end
+        
+        local attached_to = player:get_attach()
+        if not attached_to then
+            return false, "You must be in a car to use this command"
+        end
+        
+        local car_entity = minetest.get_objects_inside_radius(attached_to:get_pos(), 1)
+        for _, obj in ipairs(car_entity) do
+            if obj:get_luaentity() and obj:get_luaentity().name == "car_f1:car_f1" then
+                local car = obj:get_luaentity()
+                
+                -- Test different performance levels
+                if param == "max" then
+                    car.performance_multiplier = 1.0
+                    car.tire_wear = 1.0
+                    car.fuel = 100
+                    minetest.chat_send_player(name, "Car set to maximum performance!")
+                elseif param == "min" then
+                    car.performance_multiplier = 0.3
+                    car.tire_wear = 0.1
+                    car.fuel = 10
+                    minetest.chat_send_player(name, "Car set to minimum performance!")
+                else
+                    car.performance_multiplier = 0.7
+                    car.tire_wear = 0.6
+                    car.fuel = 50
+                    minetest.chat_send_player(name, "Car set to medium performance!")
+                end
+                
+                return true, "Performance test completed"
+            end
+        end
+        
+        return false, "No car found nearby"
+    end
+})
+
+-- Enhanced HUD elements for car information
 local function update_car_hud(player)
     if not player or not player:is_player() then
         return
@@ -90,14 +234,16 @@ local function update_car_hud(player)
             if obj:get_luaentity() and obj:get_luaentity().name == "car_f1:car_f1" then
                 local car = obj:get_luaentity()
                 
-                -- Show car stats in chat (you could enhance this with proper HUD)
+                -- Show enhanced car stats in chat
                 if car.timer < 0.1 then -- Update every 2 seconds
                     local speed = math.abs(car.v or 0)
                     local speed_kmh = math.floor(speed * 36) -- Convert to km/h
+                    local gear_name = physics.transmission.gears[car.current_gear or 1].name
                     
                     minetest.chat_send_player(player:get_player_name(), 
-                        string.format("Speed: %d km/h | Fuel: %d%% | Damage: %d%%", 
-                        speed_kmh, math.floor(car.fuel), math.floor(car.damage)))
+                        string.format("🏎️ Speed: %d km/h | Gear: %s | RPM: %d | Fuel: %d%% | Damage: %.1f%% | Tires: %.1f%%", 
+                        speed_kmh, gear_name, car.engine_rpm or 0, 
+                        math.floor(car.fuel), car.performance_multiplier * 100, car.tire_wear * 100))
                 end
                 break
             end
@@ -112,7 +258,7 @@ minetest.register_globalstep(function(dtime)
     end
 end)
 
--- Add particle effects for enhanced visuals
+-- Enhanced particle effects for advanced physics
 local function create_car_particles(car)
     if not car or not car.object then
         return
@@ -147,8 +293,9 @@ local function create_car_particles(car)
         })
     end
     
-    -- Tire smoke when turning sharply
-    if car.f and car.f > 0.4 and speed > 2 then
+    -- Tire smoke when turning sharply or braking hard
+    local driving_intensity = math.abs(car.steering_input or 0) + math.abs(car.brake_input or 0)
+    if driving_intensity > 0.4 and speed > 2 then
         local tire_pos = {
             x = pos.x + math.cos(car.object:get_yaw() + math.pi/2) * 1.0,
             y = pos.y + 0.1,
@@ -156,7 +303,7 @@ local function create_car_particles(car)
         }
         
         minetest.add_particlespawner({
-            amount = 3,
+            amount = math.floor(driving_intensity * 8),
             time = 0.3,
             minpos = tire_pos,
             maxpos = tire_pos,
@@ -168,6 +315,32 @@ local function create_car_particles(car)
             maxexptime = 1.0,
             minsize = 0.3,
             maxsize = 0.8,
+            collisiondetection = false,
+            texture = "default_smoke.png"
+        })
+    end
+    
+    -- Suspension particles when suspension is compressed
+    if car.suspension_compression and math.abs(car.suspension_compression) > 0.1 then
+        local suspension_pos = {
+            x = pos.x,
+            y = pos.y - 0.5,
+            z = pos.z
+        }
+        
+        minetest.add_particlespawner({
+            amount = 2,
+            time = 0.2,
+            minpos = suspension_pos,
+            maxpos = suspension_pos,
+            minvel = {x = -0.1, y = 0.1, z = -0.1},
+            maxvel = {x = 0.1, y = 0.3, z = 0.1},
+            minacc = {x = 0, y = 0.02, z = 0},
+            maxacc = {x = 0, y = 0.05, z = 0},
+            minexptime = 0.3,
+            maxexptime = 0.8,
+            minsize = 0.2,
+            maxsize = 0.5,
             collisiondetection = false,
             texture = "default_smoke.png"
         })
@@ -204,7 +377,15 @@ function car_f1.api.get_car_stats(car_entity)
         damage = car.damage or 0,
         driver = car.driver,
         engine_running = car.engine_running,
-        surface_type = car.surface_type
+        surface_type = car.surface_type,
+        -- Advanced physics data
+        tire_wear = car.tire_wear or 1.0,
+        performance_multiplier = car.performance_multiplier or 1.0,
+        current_gear = car.current_gear or 1,
+        engine_rpm = car.engine_rpm or 4000,
+        suspension_compression = car.suspension_compression or 0,
+        weather_condition = car.weather_condition or "clear",
+        component_damage = car.component_damage or {}
     }
 end
 
@@ -228,6 +409,34 @@ function car_f1.api.modify_car(car_entity, properties)
     return true
 end
 
+-- Function to test advanced physics
+function car_f1.api.test_physics(car_entity, test_type)
+    if not car_entity or car_entity.name ~= "car_f1:car_f1" then
+        return false
+    end
+    
+    local car = car_entity:get_luaentity()
+    if not car then
+        return false
+    end
+    
+    if test_type == "suspension" then
+        car.suspension_compression = 0.3
+        return true, "Suspension test applied"
+    elseif test_type == "tires" then
+        car.tire_wear = 0.2
+        return true, "Tire wear test applied"
+    elseif test_type == "damage" then
+        car.component_damage = {front_bumper = 30, hood = 20}
+        physics.apply_damage_effects(car)
+        return true, "Damage test applied"
+    end
+    
+    return false, "Unknown test type"
+end
+
 -- Log successful loading
-minetest.log("info", "[car_f1] Enhanced F1 Car mod loaded successfully!")
-minetest.log("info", "[car_f1] Use /car_info for more information")
+minetest.log("info", "[car_f1] Enhanced F1 Car mod with advanced physics loaded successfully!")
+minetest.log("info", "[car_f1] New commands: /car_diagnostics, /car_weather, /car_physics, /car_performance")
+minetest.log("info", "[car_f1] Advanced physics: Suspension, Tire Physics, Aerodynamics, Weight Transfer")
+minetest.log("info", "[car_f1] Driving assistance: ABS, TCS, ESC systems active")
